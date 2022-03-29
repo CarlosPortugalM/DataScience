@@ -1,0 +1,52 @@
+---
+title: "Practica 6"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+#Carga y muestra de la base de datos "airquality".
+```{r}
+    data(airquality)
+    airquality
+```
+
+#Calcula la media mesual de temperaturas. Es posible considerar un grupo por mes. Luego, se muestra una grafica de barras:
+    Titulo: "Media mensual de temperaturas"
+    X: "Mes"
+    Y: "Media mensual"
+    Barras color amarillo en Horizontal y color verde en vertical.
+```{r}
+    data <- summarize(group_by (airquality, Month), media_mesual = mean(Temp, na.rm = TRUE))
+    barplot(height = data$media_mesual,
+    names.arg = data$Month,
+    main = "Media mensual de temperaturas", 
+    xlab = "Mes", horiz = TRUE, 
+    ylab = "Media mensual",
+    col = "yellow")
+
+    barplot(height = data$media_mesual,
+    names.arg = data$Month,
+    main = "Media mensual de temperaturas",
+    xlab = "Mes", horiz = FALSE,
+    ylab = "Media mensual",
+    col = "green")
+```
+
+#Grafica de dispersion Ozone vs Solar.R, con el siguiente formato:
+    Titulo: Ozono vs Radiacion Solar
+    xlab = Ozono
+    ylab = Radiacion Solar
+    color = azul
+```{r}
+    plot(x = airquality$Ozone, y = airquality$Solar.R,
+    type = "o",
+    main = "Ozono vs Radiacion Solar",
+    xlab = "Radiacion Solar",
+    ylab = "Ozono",
+    col = "blue")
+```
