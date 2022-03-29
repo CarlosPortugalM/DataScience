@@ -1,0 +1,61 @@
+---
+title: "Practica 5"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+#Carga de la base de datos de "airquality" y muestra:
+``` {r}
+  library(dplyr)
+```	
+
+``` {r}
+    data(airquality)
+```
+
+#Muestra la estructura de la base de datos previamente cargada:
+``` {r}
+    class(airquality)
+```
+
+#Tamaño del archivo cargado:
+``` {r}
+    object.size(airquality)
+```
+
+#Resumen de la base de datos.
+``` {r}
+    summary(airquality)
+```
+
+#Primeros seis registros de la base de datos:
+``` {r}
+    head(airquality, 6)
+```
+
+#Crea un conjunto de datos que solo contiene las variables "Ozone", "Wind", "Temp". Tambien muestra los primeros seis registros.
+``` {r}
+    head(select(airquality, Ozone, Wind, Temp), 6)
+```
+
+#Subconjunto de datos que contiene todas las columnas, excepto Wind y Day. Luego, filtra las radiaciones del mes ocho, que hayan sido mayores a 200.
+``` {r}
+    filter(select(airquality, -Wind, -Day), Month == 8, Solar.R > 200)
+```
+
+#Muestra la variable Wind y Temp de los dias 1, 5 y 10.
+``` {r}
+    select(filter(airquality, Day %in% c(1, 5, 10)), Wind, Temp)
+```
+
+#Convierte el atributo Temp de Centigrados a Farenheit:
+``` {r}
+    mutate(airquality, Temp = (Temp * 9/5) + 32)
+```
+
+#Agrupa por dias y muestra el resumen de los promedios de los atributos "Wind" y "Temp".
+``` {r}
+    summary(group_by(airquality, Day), promWind = mean(Wind, na.rm = TRUE), promTemp = mean(Temp, na.rm = TRUE))
+```
+
