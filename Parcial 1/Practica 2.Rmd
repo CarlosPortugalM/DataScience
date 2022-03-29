@@ -1,0 +1,205 @@
+---
+title: "Practica 2"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+##Proporciona ayuda sobre cualquier función de R.
+```{r}
+    help(mean)
+```
+
+#Forma alternativa de obtener ayuda sobre cualquier función de R.
+```{r}
+    ?mean
+``` 
+
+#Si se desconoce el nombre exacto de la función, se puede utilizar:
+#help.search("nombre de la función")
+
+#Variables
+#Basta con definir un valor numerico cualquiera, empleando el operador <- para hacer la asignacion
+#Por ejemplo:
+``` {r}
+    doub <- 4
+```
+#Otra forma, es emplear el operador = para hacer la asignacion
+#Por ejemplo:
+``` {r}
+    doub = 4
+```
+
+#Muestra el valor de la Variable
+```{r}
+    doub
+```
+
+#Por otra parte, para definir variables de tipo Integer, se debe utilizar la funcion as.integer()
+#Por ejemplo:
+```{r}
+    int = as.integer(4)
+    int
+```
+
+#Asi mismo, una variable logica se define asignando TRUE o FALSE segun corresponda.
+#Por ejemplo:
+```{r}
+    logi = TRUE
+    logi
+```
+
+##Variables de tipo cadena.
+```{r}
+    char1 = "Hola"
+    char1
+
+    char2 <- "5 + 6"
+    char2
+``` 
+
+
+##Comprobando los tipos de datos.
+```{r}
+    typeof(doub)
+    typeof(logi)
+    typeof(char1)
+    typeof(char2)
+```
+
+##Operadores basicos.
+```{r}
+    2^3 #Elevacion
+    9/6 #Division
+    9%%6 #Modulo
+```
+
+##Operadores de asignacion
+
+``` {r}
+    a = 2 +2 #Resultado de 2 + 2 se asigna a la variable a
+    b = 3 * 2 #Resultado de 3 * 2 se asigna a la variable b
+    b - a -> c #Resultado de b - a se asigna a la variable c
+
+    a
+    b
+    c
+```
+
+##Operadores comparativos
+```{r}
+    a == 5 #Compara si a es igual a 5
+    a == 4 & b < 2 #Compara si a es igual a 4 y b es menor que 2
+    a == 4 | b < 2 #Compara si a es igual a 4 o b es menor que 2
+    a == 4 | b < 2 & c != 9 # Compara si a es igual a 4 o b es menor que 2 y c es distinto de 9.
+```
+
+##Otras funciones.
+
+``` {r}
+    x = 2
+    sqrt(x) #Devuelve la raiz cuadrada de x
+    abs(x) #Devuelve el valor absoluto de x
+    sin(x) #Devuelve el seno de x
+    cos(x) #Devuelve el coseno de x
+    tan(x) #Devuelve la tangente de x
+    log(x) #Devuelve el logaritmo de x
+    exp(x) #Devuelve la exponencial de x
+```
+
+##Estructuras de datos.
+
+##Vectores.
+``` {r}
+    v = 1:10 #Crea un vector de 1 a 10.
+    v
+```
+
+##Matrices.
+``` {r}
+   mat1 <- matrix(c(1,2,3,4,5,6),nrow = 2, ncol = 3) #Por defecto, las matrices se completan por columna.
+   mat1
+
+   mat2 <- matrix(c(1,2,3,4,5,6),nrow = 2, ncol = 3, byrow = TRUE) #byrow = TRUE indica que las matrices se completan por fila.
+   mat2
+
+   m <- matrix(c(1,1,2,1),2,2)
+```
+
+##Arrays.
+``` {r}
+    arr1 <- array(c(1,2,3,4,5,6,7,8),dim = c(2,2,2)) 
+    arr1
+```
+
+##Factores ordenados.
+``` {r}
+    ord <- ordered(c(1,2,1,2,3,1,2,1,2),levels = c(1,2,3))
+    ord
+    ord2 <- ordered(c(1,2,1,2,3,1,2,1,2),levels = c(2,3,1))
+    ord2
+    ord3 <- ordered(c(1,2,1,2,3,1,2,1,2), levels = c(3,1,2))
+    ord3
+```
+
+## Factores no ordenados
+
+```{r}
+fac <- factor(c("H","M","M","H","H","M"), levels = c("H","M"))
+fac
+fac2 <- factor(c("H","M","M","H","H","M"), levels = c("M","H"))
+fac2
+```
+# Data frames y listas
+```{r}
+    a <- c(1,5,4)
+    b <- c("Hola","adiós","hasta luego")
+    c <- c(TRUE,FALSE,FALSE)
+    d <-c(1,2,3,4,5)
+    dataframe <- data.frame(a,b,c)
+    dataframe
+    list1 <- list(a,b,c)
+    list1
+    list2 <- list(a,b,c,d)
+    list2
+```
+# Acceso a los elementos de las estructuras de datos
+```{r}
+    v[3]
+    mat1[2,3]
+    arr1[2,1,2] #el elemento de la segunda fila, primera columna de la segunda matriz
+    #También se puede acceder a varios elementos usando la función de concatenación c
+    mat1[c(1,2),3] #los elementos (1,3) y (2,3) de la matriz
+    mat1[1,] #accediendo a una fila completa
+    mat1[,c(1,2)] #accediendo a una columna completa
+    #Accediendo a los elementos de un factor ordenado y no ordenado
+    fac[2]
+    ord[c(2,5)]
+    #En los data frames se utiliza el símbolo $ seguido del nombre de la columna dentro del dataframe
+    dataframe$a
+    #Y una vez obtenida la columna, es posible obtener los valores usando los corchetes
+    dataframe$a[1]
+    #Alternativamente, un data frame puede verse como una matriz, por tanto, pueden usarse corchetes para acceder a sus elementos
+    dataframe[1,]
+    #Y para acceder a un elemento dentro de una lista, se utilizan corchetes dobles
+    list1[[2]]
+    list2[[4]][2]
+```
+
+# Ejemplos
+```{r}
+    peso <- c(19,14,15,17,20,23,30,19,25)
+    peso < 20
+    peso<20 | peso>25
+    peso[peso<20]
+    peso[peso<20 & peso!=15]
+```
+
+
+
+   
+
+
+
+
