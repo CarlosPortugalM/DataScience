@@ -1,0 +1,59 @@
+---
+title: "Practica 1"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+#Cargar librería cars de R
+```{r}
+data(cars)
+```
+#Mostrar el resumen del conjunto de datos.
+``` {R}
+summary(cars)
+```
+#Mostrar la cantidad de filas y columnas.
+``` {R}
+dim(cars)
+``` 
+#Mostrar el tamaño del archivo.
+``` {R}
+object.size(cars)
+```
+#Mostrar el nombre de las columnas.
+``` {R}
+colnames(cars)
+```
+#Mostrar ultimos diez registros.
+``` {R}
+tail(cars, 10)
+```
+#Mostrar los primeros seis registros.
+``` {R}
+head(cars, 6)
+```
+#Mostrar el registro que esta a la mitad.
+``` {R}
+cars[nrow(cars)/2,]
+```
+#Mostrar los valores de la columna speed
+``` {R}
+cars[,"speed"]
+```
+#Mostrar los valores donde speed es mayor a 20
+``` {R}
+cars[cars$speed > 20,]
+```
+#Mostrar los registros 2 y 20
+``` {R}
+cars[2,]
+cars[20,]
+```
+#Mostrar los valores solo dist donde speed es igual a 20
+``` {R}
+cars[cars$speed == 20,]
+```
+#Almacenar en una variable que sean mayor o igual a 20.
+``` {R}
+sub1 = cars[cars$speed >= 20,]
+```
