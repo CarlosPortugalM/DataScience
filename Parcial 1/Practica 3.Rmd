@@ -1,0 +1,21 @@
+---
+title: "Practica 3"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+#Leer tabla con read.table
+
+``` {r}
+    library(readxl)
+    data <- read.table(file = "datos.data", header = TRUE)
+    data
+```
+
+#Leer datos desde Excel con readxl
+``` {r}
+    dataXL <- read_excel(file.choose(), sheet = "Hoja1")
+    dataXL <- read_excel(path = "data.xls", sheet = "Hoja1")
+    as.data.frame(dataXL)
+```
+
