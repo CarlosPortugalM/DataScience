@@ -1,0 +1,240 @@
+---
+title: "Practica 7"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+``` {r include = FALSE}
+    library(dplyr)
+    library(tidyverse)
+```
+
+##Resumen de la base de datos con la funcion str.
+``` {r}
+    students <- read.table(file = "students.data", header = TRUE, sep = "\t")
+    str(students)
+```
+
+##Nombres de las variables.
+``` {r}
+    names(students)
+```
+#Informacion general del archivo.
+``` {r}
+    object.size(students) #Tamaño del archivo.
+    nrow(students) #Numero de filas.
+    ncol(students) #Numero de columnas.
+```
+
+## 5.
+``` {r}
+    new_students <- students[1:10,2:5]
+```
+
+## A) Fila 3 y columna 2.
+``` {r}
+    new_students[3,2]
+```
+
+## B) Todas las filas y columna 2.
+``` {r}
+    new_students[,2]
+```
+
+## C) Fila 3 y todas las columnas.
+``` {r}
+    new_students[3,]
+```
+
+## D) Todas las columnas sin la fila 5.
+``` {r}
+    new_students[-5,]
+```
+
+## E) Todas las filas sin la columna 2.
+``` {r}
+    new_students[, -2]
+```
+
+##F) Todas las filas, sin las columnas: de la 2 a la 4.
+``` {r}
+    new_students[, 2:4]
+```
+
+## G) Todas las filas, columnas 2 y 5.
+``` {r}
+    new_students[,c(2,4)]
+```
+
+##H) Filas de la 1 a la 4, columnas de la 2 a la 5.
+``` {r}
+    new_students[1:4, 2:4]
+```
+
+##TIPOS DE VARIABLES.
+
+``` {r}
+    sapply(select(students, ID, Edad, Sexo), class)
+    bd <- transform(students, Edad = as.numeric(Edad))
+    bd <- transform(students, Sexo = as.factor(Sexo))
+```
+
+##TABLAS UNIVARIADAS.
+``` {r}
+    #Definición y conversion a factor.
+    sexo = as.factor(students$Sexo)
+    #Calculo de la tabla de frecuencias.
+    tabla_frecuencias_sexo = table(sexo)
+```
+
+##Tabla cruzada.
+``` {r}
+    #Definición y conversion a factor.
+    fuma = as.factor(students$Fuma)
+    #Calculo de la tabla de frecuencias.
+    tabla_frecuencias_fuma = table(sexo, fuma)
+
+    barplot(tabla_frecuencias_fuma,
+            main = "Cantidad de fumadores segun el sexo",
+            xlab = "Fumadores (as)",
+            ylab = "Frecuecia de acuerdo al sexo",
+            col = rainbow(2),
+            legend.text = rownames(tabla_frecuencias_fuma),
+            args.legend = list(title = "Sexo", x = "topright"),
+            horiz = FALSE)
+```
+## ==========================================================================
+``` {r}
+    another_data <- students[2:193, c(5:15,20,35)]
+```
+
+##A) Primeros seis registros.
+``` {r}
+    head(another_data, 6)
+```
+
+##B) Estructura de los nuevos datos.
+``` {r}
+    str(another_data)
+```
+
+##C) Nombres de las variables.
+``` {r}
+    names(another_data)
+```
+
+##D) Tamaños en el archivo: filas, columnas, tamaño del archivo.
+``` {r}
+    object.size(another_data)
+    nrow(another_data)
+    ncol(another_data)
+```
+
+##E) Tipos de todas variables en el archivo.
+``` {r}
+    sapply(another_data, class)
+````
+
+##F) Tabla de fruencias con variable categórica y grafica de barras. Con Titulos.
+``` {r}
+    barplot(table(as.factor(another_data$Estatura)),
+            main = "Clasificacion por estatura",
+            xlab = "Estatura",
+            ylab = "Frecuencia",
+            col = rainbow(3),
+            horiz = FALSE)
+```
+##G) Tabla de frecuencias cruzadas con variables categóricas (con grafica de barras).
+``` {r}
+    another_data_2 <- table(as.factor(another_data$Clases), as.factor(another_data$Estatura))
+
+   barplot(another_data_2,
+           main = "Clasificacion por estatura y clases (preseciales o virtuales)",
+           xlab = "Estatura",
+           ylab = "Frecuecia por Clases",
+           col = rainbow(2),
+           legend.text = rownames(another_data_2),
+           args.legend = list(title = "Clases", x = "topright"),
+           horiz = FALSE)
+```
+
+## ==========================================================================
+
+##H) Variable numerica (diferente de P3 y de Edad) calculos de las siguientes estadisticas.
+
+``` {r}
+    fc <- another_data$Acumulado
+```
+
+### min(x)
+``` {r}
+    min(fc)
+```
+### max(x)
+``` {r}
+    max(fc)
+```
+
+### range(x)
+``` {r}
+    range(fc)
+```
+
+### lenght (x)
+``` {r}
+    length(fc)
+```
+
+### sum(x)
+``` {r}
+    sum(fc)
+```
+### mean(x)
+``` {r}
+    mean(fc)
+```
+### median(x)
+``` {r}
+    median(fc)
+```
+### var(x)
+``` {r}
+    var(fc)
+```
+
+### sqrt (x)
+``` {r}
+    sqrt(fc)
+```
+
+### sd (x)
+``` {r}
+    sd(fc)
+```
+
+### skewness (x)
+``` {r}
+    skewness(fc)
+```
+
+## Grafica a partir de un subconjunto de datos; una de dispersion y un histograma. Explicacion de cada grafica.
+``` {r}
+    another_data_3 <- table(as.factor(another_data$Edad),
+                           as.factor(another_data$Estatura))
+    barplot(another_data_3,
+            main = "Clasificacion por estatura y edad",
+            xlab = "Edad",
+            ylab = "Frecuecia por Estatura",
+            col = rainbow(2),
+            legend.text = rownames(another_data_3),
+            args.legend = list(title = "Estatura", x = "topright"),
+            horiz = FALSE)
+```
+
+### Grafica de dispersion.
+``` {r}
+    ggplot(data = another_data_3,
+           aes(x = Edad, y = Estatura)) +
+    geom_point(alpha = 0.7, aes(color = Clases, shape = Clases))
+
+
