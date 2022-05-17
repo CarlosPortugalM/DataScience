@@ -1,0 +1,70 @@
+---
+title: "P11"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r setup, include=FALSE}
+library(ggmap)
+library(rjson)
+library(MAP)
+library(tidyverse)
+library(rtweet)
+library(wordcloud2)
+api_key <- "AIzaSyDfRA5LLOJJNEtbcv7aZ683YiCbCUleKpg"
+register_google(key = api_key)
+```
+
+# Usuarios más populares
+
+```{r}
+consulta <- "Roger+Waters"
+tweets <- search_tweets(consulta,
+                        n = 1500,
+                        include_rts = FALSE,
+                        retryonratelimit = TRUE)
+options(scipen = 20)
+ggplot(tweets) +
+  geom_histogram(aes(x = followers_count))
+```
+
+# Cantidad de usuarios por país que postearon sobre el tema
+
+```{r}
+tweets %>%
+  ggplot() +
+  geom_bar(aes(location)) +
+  coord_flip() +
+  labs(title = "Procedencia de los usuarios",
+       x = "cantidad",
+       y = "ubicación")
+```
+
+# Gráfica de los tweets generados por minuti, hora, día
+
+```{r}
+    ts_plot(tweets, "minute")
+    ts_plot(tweets, "hour")
+    ts_plot(tweets, "days")
+```
+
+# Mostrar usuarios en el mapa
+
+```{r}
+iconv(tweets$text, "latin1", "ASCII", sub = "")
+procedencia_tweets <- tweets %>%
+  #sample_n(100) %>% # tomamos una muestra al azar de 100 filas
+  filter(!is.na(location), location != "") %>%
+  pull(location) %>%
+  geocode() %>%
+  group_by(lon, lat) %>%
+  summarise(cantidad = n())
+ggplot(procedencia_tweets) +
+  borders("world") +
+  geom_point(aes(x = lon, y = lat, size = cantidad), alpha = .4, color = "orange") +
+  labs(title = "Procedencia de los tweets capturados")
+```

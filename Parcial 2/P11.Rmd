@@ -1,0 +1,108 @@
+---
+title: "P11"
+author: "Carlos Enrique Portugal Martínez"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+# ¿Qué sucede si en la faceta se usa una variable continua? Prueba con la variable displ de la base de datos mpg.
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~ displ, nrow = 2)
+```
+
+~~~
+Si se usa una variable continua, se crean muchas gráficas pequeñas con varios conjuntos de datos, además de que los datos se miran de forma continua, por ello es que no es recomendable utilizar variables continuas.
+~~~
+
+# Muestra el tipo de datos y los varoles únicos de las variables: hwy, displ, dvr y cyl. ¿Qué significan las celdas vacías del gráfico con facet_grid(drv ~ cyl)? ¿Cómo se relacionan con esta trama?
+
+```{r}
+sapply(select(mpg, hwy, displ, drv, cyl), class)
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy)) + facet_grid(drv ~ cyl)
+ggplot(data = mpg) + geom_point(mapping = aes(x = drv, y = cyl))
+```
+
+~~~
+La celdas vacias o facetas que se pueden observar en el primer gráfico corresponden a las combinaciones de drv y cyl.
+El segundo gráfico es casi similar al anterior, ya que muestra que combinaciones tienen el 4, f y r sin contarlas celdas vacias que se mostraban en el gráfico anterior, como por ejemplo el 4 tiene a 4,6 y 8, el f tiene 4,5,6 y 8 y el r tiene solo 6 y 8 .
+~~~
+
+# ¿Qué tramas hace el siguiente código? Discuta el resultado.
+
+```{r}
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy)) + facet_grid(drv ~ .)
+ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy)) + facet_grid(. ~ cyl)
+```
+
+~~~
+En la primer gráfica, el punto ignora la dimensión cuando se dibujan las facetas, cuando se usa drv ~ ., divide por los valores de drv en el eje y.
+En el segundo, el punto ignora la dimensión cuando se dibujan las facetas, cuando se usa . ~ cyl, divide por los valores de cyl en el eje x.
+~~~
+
+# Lea la ayuda ?facet_wrap. ¿Qué hace nrow? ¿Qué hace ncol? ¿Qué hace otras opciones controlan el diseño de los paneles individuales? ¿Por qué facet_grid() no tiene argumentos nrow y ncol?
+
+```{r}
+?facet_wrap
+```
+
+~~~
+Los argumentos nrow y ncol determinan el número de filas y columnas en el momento en que se generan las facetas, facet_wrap solo opera con una única variable.
+nrow y ncol no son necesarios en facet_grid ya que el número de valores únicos en la función determina el número de filas y columnas.
+~~~
+
+# Al usar facet_grid(), generalmente debe colocar la variable con más niveles únicos en las columnas. ¿Por qué?
+
+~~~
+Al hacer esto, se generan más espacios para las columnas si es que el gráfico que se desea graficar es de forma horizontal.
+~~~
+
+# COMPLEMENTO DE PRÁCTICA
+
+## Use base de datos ToothGrowth, convierte la variable dose de númerica a factor
+
+```{r}
+data(ToothGrowth)
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+```
+
+## Crea un gráfico tipo geom_boxplot(), donde x = dose, y = len, group = dose. Debe colocarse mediante fill = dose
+
+```{r}
+bp <- ggplot(data = ToothGrowth, aes(x = dose, y = len, group = dose)) + geom_boxplot(aes(fill = dose))
+bp
+```
+
+## Faceta con una variable, el gráfico se dividirá en múltiples paneles por niveles de acuerdo a la variable "supp":
+
+```{r}
+# Separar en dirección vertical
+bp + facet_grid(supp ~ .)
+# Separar en dirección horizontal
+bp + facet_grid(. ~ supp)
+```
+
+## Faceta con dos variables, el gráfico será dividido por los niveles de los grupos "dose" "supp"
+```{r}
+# Faceta de dos variables: dose y supp.
+# Fila es dose y columna es supp
+bp + facet_grid(dose ~ supp)
+# Faceta de dos variables: invertir el orden de las dos variables
+# Fila es supp y columna es dose
+bp + facet_grid(supp ~ dose)
+```
+
+## ¿Qué pasa si agrega margins?
+
+```{r}
+bp + facet_grid(dose ~ supp, margins = TRUE)
+```
+
+~~~
+Los margenes sirven para agregar facetas adicionales que contiene todos los datos para cada uno de los valores posibles de las variables de las facetas.
+~~~
